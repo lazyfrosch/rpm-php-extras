@@ -251,6 +251,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Mar 25 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.2-2
+- Accepted for Fedora Extras
+  (review by Tom "spot" Callaway <tcallawa@redhat.com>)
+ 
 * Wed Mar  1 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.2-2
 - more accurate Requires for the main php
   (using php-api, provided now by the Core php package).
