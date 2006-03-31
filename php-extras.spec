@@ -15,7 +15,7 @@
 
 
 %define extdir	%(php-config --extension-dir)
-%define apiver	%(echo PHP_API_VERSION | %{__cc} -E --include=php.h `php-config --includes` - | tail -1)
+%define apiver	%(cd %{_tmppath}; echo PHP_API_VERSION | %{__cc} -E --include=php.h `php-config --includes` - | tail -1)
 
 
 Name: php-extras
