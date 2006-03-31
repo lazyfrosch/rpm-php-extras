@@ -22,7 +22,7 @@ Name: php-extras
 Summary: Additional PHP modules from the standard PHP distribution
 #Version: %(php-config --version)
 Version: 5.1.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 Group: Development/Languages
 License: The PHP License
 URL: http://www.php.net/
@@ -251,6 +251,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 31 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.2-3
+- ppc arch hack: change dir before %%apiver auto-detecting
+
 * Sat Mar 25 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.2-2
 - Accepted for Fedora Extras
   (review by Tom "spot" Callaway <tcallawa@redhat.com>)
