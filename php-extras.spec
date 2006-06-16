@@ -14,8 +14,10 @@
 %define list	%{?_with_dbase:dbase} %{?_with_readline:readline} %{?_with_recode:recode} %{?_with_mcrypt:mcrypt} %{?_with_mhash:mhash} %{?_with_tidy:tidy} %{?_with_mssql:mssql}
 
 
-%define extdir	%(php-config --extension-dir)
-%define apiver	%(phpize --version | sed -n '/PHP Api Version/ s/.*:[ 	]*//p')
+#%define extdir	%(php-config --extension-dir)
+%define extdir	/usr/lib/php/modules
+#%define apiver	%(phpize --version | sed -n '/PHP Api Version/ s/.*:[ 	]*//p')
+%define apiver	20041225
 
 
 Name: php-extras
@@ -254,6 +256,8 @@ rm -rf $RPM_BUILD_ROOT
 * Fri Jun 16 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.4-1
 - update to upstream php 5.1.4
 - an easier way to auto-detect php-api version
+- specify extdir and apiver explicitly, because FE build system
+  is not able to auto-detect it now.
 
 * Fri Mar 31 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.2-3
 - ppc arch hack: change dir before %%apiver auto-detecting
