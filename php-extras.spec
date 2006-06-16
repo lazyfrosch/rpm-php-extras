@@ -15,14 +15,14 @@
 
 
 %define extdir	%(php-config --extension-dir)
-%define apiver	%(cd %{_tmppath}; echo PHP_API_VERSION | %{__cc} -E --include=php.h `php-config --includes` - | tail -1)
+%define apiver	%(phpize --version | sed -n '/PHP Api Version/ s/.*:[ 	]*//p')
 
 
 Name: php-extras
 Summary: Additional PHP modules from the standard PHP distribution
 #Version: %(php-config --version)
-Version: 5.1.2
-Release: 3%{?dist}
+Version: 5.1.4
+Release: 1%{?dist}
 Group: Development/Languages
 License: The PHP License
 URL: http://www.php.net/
@@ -251,6 +251,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 16 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.4-1
+- update to upstream php 5.1.4
+- an easier way to auto-detect php-api version
+
 * Fri Mar 31 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.2-3
 - ppc arch hack: change dir before %%apiver auto-detecting
 
