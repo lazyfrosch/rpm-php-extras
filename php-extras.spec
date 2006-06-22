@@ -14,17 +14,15 @@
 %define list	%{?_with_dbase:dbase} %{?_with_readline:readline} %{?_with_recode:recode} %{?_with_mcrypt:mcrypt} %{?_with_mhash:mhash} %{?_with_tidy:tidy} %{?_with_mssql:mssql}
 
 
-#%define extdir	%(php-config --extension-dir)
-%define extdir	/usr/lib/php/modules
-#%define apiver	%(phpize --version | sed -n '/PHP Api Version/ s/.*:[ 	]*//p')
-%define apiver	20041225
+%define extdir	%(php-config --extension-dir 2>/dev/null || echo be_happy_mock)
+%define apiver	%(( phpize --version 2>/dev/null || echo 'PHP Api Version: be_happy_mock' ) | sed -n '/PHP Api Version/ s/.*:[ 	]*//p')
 
 
 Name: php-extras
 Summary: Additional PHP modules from the standard PHP distribution
 #Version: %(php-config --version)
 Version: 5.1.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 Group: Development/Languages
 License: The PHP License
 URL: http://www.php.net/
@@ -253,6 +251,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 22 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.4-2
+- auto-detect extdir and apiver again (needed for x86_64)
+
 * Fri Jun 16 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.4-1
 - update to upstream php 5.1.4
 - an easier way to auto-detect php-api version
