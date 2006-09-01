@@ -14,15 +14,15 @@
 %define list	%{?_with_dbase:dbase} %{?_with_readline:readline} %{?_with_recode:recode} %{?_with_mcrypt:mcrypt} %{?_with_mhash:mhash} %{?_with_tidy:tidy} %{?_with_mssql:mssql}
 
 
-%define extdir	%(php-config --extension-dir 2>/dev/null || echo be_happy_mock)
-%define apiver	%(( phpize --version 2>/dev/null || echo 'PHP Api Version: be_happy_mock' ) | sed -n '/PHP Api Version/ s/.*:[ 	]*//p')
+%global extdir	%(php-config --extension-dir 2>/dev/null || echo "undefined")
+%global apiver	%((echo 0; php -i 2>/dev/null | sed -n 's/^PHP API => //p') | tail -1)
 
 
 Name: php-extras
 Summary: Additional PHP modules from the standard PHP distribution
-#Version: %(php-config --version)
-Version: 5.1.4
-Release: 2%{?dist}
+#Version: %(php-config --version 2>/dev/null || echo 0)
+Version: 5.1.6
+Release: 1%{?dist}
 Group: Development/Languages
 License: The PHP License
 URL: http://www.php.net/
@@ -117,7 +117,7 @@ Standard PHP module provides mssql support
 
 %build
 
-export CFLAGS="$RPM_OPT_FLAGS -Wall -fno-strict-aliasing"
+export CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -Wno-pointer-sign"
 
 
 for mod in %{list}
@@ -251,6 +251,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep  1 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.6-1
+- update to 5.1.6
+
 * Thu Jun 22 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.4-2
 - auto-detect extdir and apiver again (needed for x86_64)
 
