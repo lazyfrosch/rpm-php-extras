@@ -3,7 +3,6 @@
 %define def()	%%{!?_without_default:%%{!?_without_%1: %%global _with_%1 --with-%1}}
 
 %{expand:%def dbase}
-%{expand:%def readline}
 #  recode
 %{expand:%def mcrypt}
 %{expand:%def mhash}
@@ -11,7 +10,7 @@
 #  mssql
 
 
-%define list	%{?_with_dbase:dbase} %{?_with_readline:readline} %{?_with_recode:recode} %{?_with_mcrypt:mcrypt} %{?_with_mhash:mhash} %{?_with_tidy:tidy} %{?_with_mssql:mssql}
+%define list	%{?_with_dbase:dbase} %{?_with_recode:recode} %{?_with_mcrypt:mcrypt} %{?_with_mhash:mhash} %{?_with_tidy:tidy} %{?_with_mssql:mssql}
 
 
 %global extdir	%(php-config --extension-dir 2>/dev/null || echo "undefined")
@@ -21,7 +20,7 @@
 Name: php-extras
 Summary: Additional PHP modules from the standard PHP distribution
 #Version: %(php-config --version 2>/dev/null || echo 0)
-Version: 5.1.6
+Version: 5.2.0
 Release: 1%{?dist}
 Group: Development/Languages
 License: The PHP License
@@ -30,7 +29,6 @@ Source0: http://www.php.net/distributions/php-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: php-devel = %{version}
-Patch1:  php-extras-5.1.2-readline.patch
 
 
 %description
@@ -47,16 +45,6 @@ Requires: php >= %{version}, php-api = %{apiver}
 
 %description -n php-dbase
 Standard dBase module for PHP applications
-
-
-%package -n php-readline
-Summary: Standard PHP module provides readline library support
-Group: Development/Languages
-Requires: php >= %{version}, php-api = %{apiver}
-%{?_with_readline:BuildRequires: readline-devel}
-
-%description -n php-readline
-Standard PHP module provides readline library support
 
 
 %package -n php-recode
@@ -112,7 +100,6 @@ Standard PHP module provides mssql support
 
 %prep
 %setup -q -n php-%{version}
-%patch1 -p1
 
 
 %build
@@ -241,7 +228,6 @@ rm -rf $RPM_BUILD_ROOT
 #%%files
 %define fil()	%%{?_with_%1:%%files -n php-%1 -f files.%1}
 %{expand:%fil dbase}
-%{expand:%fil readline}
 %{expand:%fil recode}
 %{expand:%fil mcrypt}
 %{expand:%fil mhash}
@@ -251,6 +237,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Feb  1 2007 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.2.0-1
+- upgrade to 5.2.0
+- drop readline support (now in the main php package)
+
 * Fri Sep  1 2006 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.1.6-1
 - update to 5.1.6
 
