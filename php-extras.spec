@@ -20,7 +20,7 @@
 Name: php-extras
 Summary: Additional PHP modules from the standard PHP distribution
 #Version: %(php-config --version 2>/dev/null || echo 0)
-Version: 5.2.0
+Version: 5.2.1
 Release: 1%{?dist}
 Group: Development/Languages
 License: The PHP License
@@ -237,6 +237,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 19 2007 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.2.1-1
+- update to 5.2.1
+
 * Thu Feb  1 2007 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.2.0-1
 - upgrade to 5.2.0
 - drop readline support (now in the main php package)
