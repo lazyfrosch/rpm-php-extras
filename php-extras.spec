@@ -206,7 +206,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Tue Jan 14 2013 Remi Collet <rcollet@redhat.com> - 5.4.16-1
+* Tue Jan 14 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-1
 - update to 5.4.16
 - add virtual provides for all provided extensions
 - with imap, mssql, tidy
