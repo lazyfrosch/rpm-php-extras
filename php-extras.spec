@@ -4,7 +4,7 @@
 %define def()	%%{!?_without_default:%%{!?_without_%1: %%global _with_%1 --with-%1}}
 
 %{expand:%def imap}
-# Not ready {expand:%def interbase}
+%{expand:%def interbase}
 %{expand:%def mcrypt}
 %{expand:%def mssql}
 %{expand:%def tidy}
@@ -15,8 +15,7 @@
 Name:       php-extras
 Summary:    Additional PHP modules from the standard PHP distribution
 Version:    5.4.16
-# Set to 1 when all dependencies available
-Release:    0%{?dist}.1
+Release:    1%{?dist}
 Group:      Development/Languages
 License:    The PHP License
 URL:        http://www.php.net/
@@ -206,6 +205,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jan 16 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-1
+- add interbase
+
 * Tue Jan 14 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-0.1
 - add mcrypt
 
