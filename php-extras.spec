@@ -4,7 +4,9 @@
 %define def()	%%{!?_without_default:%%{!?_without_%1: %%global _with_%1 --with-%1}}
 
 %{expand:%def imap}
+%ifnarch ppc64
 %{expand:%def interbase}
+%endif
 %{expand:%def mcrypt}
 %{expand:%def mssql}
 %{expand:%def tidy}
