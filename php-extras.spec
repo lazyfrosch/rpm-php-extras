@@ -4,9 +4,7 @@
 %define def()	%%{!?_without_default:%%{!?_without_%1: %%global _with_%1 --with-%1}}
 
 %{expand:%def imap}
-%ifnarch ppc64
 %{expand:%def interbase}
-%endif
 %{expand:%def mcrypt}
 %{expand:%def mssql}
 %{expand:%def tidy}
@@ -22,9 +20,12 @@ Group:      Development/Languages
 License:    The PHP License
 URL:        http://www.php.net/
 Source0:    http://www.php.net/distributions/php-%{version}.tar.bz2
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+# Workarouond for https://bugzilla.redhat.com/1054659
+Patch0:     php-firebird.patch
 
 BuildRequires: php-devel >= 5.4
+BuildRequires: php-pdo
 
 
 %description
@@ -125,6 +126,8 @@ License.
 %prep
 %setup -q -n php-%{version}
 
+%patch0 -p1 -b .bug1054659
+
 # avoid tests which requires databases
 rm -rf ext/{mssql,pdo_dblib,interbase,pdo_firebird}/tests
 
@@ -150,10 +153,14 @@ done
 fail=0
 for mod in %{list}
 do
+    : Minimal load test for $mod extension
+    php -d extension=ext/$mod/modules/$mod.so -m | grep -i $mod
+
     [ -d ext/$mod/tests ] || continue
 
     pushd ext/$mod
 
+    : Upstream tests for $mod extension
     make test NO_INTERACTION=1 | tee rpmtests.log
     if grep -q "FAILED TEST" rpmtests.log
     then
@@ -209,6 +216,8 @@ rm -rf %{buildroot}
 %changelog
 * Thu Jan 16 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-1
 - add interbase
+- add workaround for https://bugzilla.redhat.com/1054659
+- minimal load test for all extensions
 
 * Tue Jan 14 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-0.1
 - add mcrypt
