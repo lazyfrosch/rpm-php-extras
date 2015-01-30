@@ -15,11 +15,14 @@
 Name:       php-extras
 Summary:    Additional PHP modules from the standard PHP distribution
 Version:    5.4.16
-Release:    2%{?dist}
+Release:    3%{?dist}
 Group:      Development/Languages
 License:    The PHP License
 URL:        http://www.php.net/
 Source0:    http://www.php.net/distributions/php-%{version}.tar.bz2
+
+# Security patches
+Patch0:     php-5.4.16-mcrypt.patch
 
 BuildRequires: php-devel >= 5.4
 BuildRequires: php-pdo
@@ -123,6 +126,8 @@ License.
 %prep
 %setup -q -n php-%{version}
 
+%patch0 -p1 -b .security
+
 # avoid tests which requires databases
 rm -rf ext/{mssql,pdo_dblib,interbase,pdo_firebird}/tests
 
@@ -209,6 +214,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 30 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-3
+- mcrypt upstream security fix
+
 * Wed Jan 22 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-2
 - drop interbase patch
 
