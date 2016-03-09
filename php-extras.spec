@@ -15,14 +15,14 @@
 Name:       php-extras
 Summary:    Additional PHP modules from the standard PHP distribution
 Version:    5.4.16
-Release:    3%{?dist}
+Release:    4%{?dist}
 Group:      Development/Languages
 License:    The PHP License
 URL:        http://www.php.net/
 Source0:    http://www.php.net/distributions/php-%{version}.tar.bz2
 
-# Security patches
 Patch0:     php-5.4.16-mcrypt.patch
+Patch1:     php-5.4.16-dblib.patch
 
 BuildRequires: php-devel >= 5.4
 BuildRequires: php-pdo
@@ -127,6 +127,7 @@ License.
 %setup -q -n php-%{version}
 
 %patch0 -p1 -b .security
+%patch1 -p1 -b .dblib
 
 # avoid tests which requires databases
 rm -rf ext/{mssql,pdo_dblib,interbase,pdo_firebird}/tests
@@ -214,6 +215,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Mar  9 2016 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.4.16-4
+- add dblib patch (#1266177)
+
 * Fri Jan 30 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-3
 - mcrypt upstream security fix
 
