@@ -15,15 +15,15 @@
 Name:       php-extras
 Summary:    Additional PHP modules from the standard PHP distribution
 Version:    5.4.16
-Release:    5%{?dist}
+Release:    6%{?dist}
 Group:      Development/Languages
 License:    The PHP License
 URL:        http://www.php.net/
 Source0:    http://www.php.net/distributions/php-%{version}.tar.bz2
 
 Patch0:     php-5.4.16-mcrypt.patch
-Patch1:     php-5.4.16-dblib.patch
-Patch2:     php-5.4.16-phpbz-64522.patch
+# Sync with upstream extension in 5.6.26
+Patch1:     php-5.4.16-pdo-dblib.patch
 
 BuildRequires: php-devel >= 5.4
 BuildRequires: php-pdo
@@ -128,8 +128,7 @@ License.
 %setup -q -n php-%{version}
 
 %patch0 -p1 -b .security
-%patch1 -p1 -b .dblib
-%patch2 -p1 -b .64522
+%patch1 -p2 -b .dblib
 
 # avoid tests which requires databases
 rm -rf ext/{mssql,pdo_dblib,interbase,pdo_firebird}/tests
@@ -217,13 +216,16 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Nov  8 2016 Remi Collet <rcollet@redhat.com> - 5.4.16-6
+- pdo_dblib: sync with upstream from 5.6.26 #1381442 #1390201
+
 * Tue Oct  4 2016 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.4.16-5
 - Fix pdo dblib query (#1381442)
 
 * Wed Mar  9 2016 Dmitry Butskoy <Dmitry@Butskoy.name> - 5.4.16-4
 - add dblib patch (#1266177)
 
-* Fri Jan 30 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-3
+* Thu Jan 30 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-3
 - mcrypt upstream security fix
 
 * Wed Jan 22 2014 Remi Collet <rcollet@redhat.com> - 5.4.16-2
