@@ -533,3 +533,44 @@ diff -ru php54/php-5.4.16/ext/pdo_dblib/php_pdo_dblib_int.h php56/php-5.6.26/ext
 Seulement dans php56/php-5.6.26/ext/pdo_dblib/tests: bug_54648.phpt
 Seulement dans php56/php-5.6.26/ext/pdo_dblib/tests: bug_68957.phpt
 Seulement dans php56/php-5.6.26/ext/pdo_dblib/tests: bug_69757.phpt
+diff -ru php-5.6.26/ext/pdo_dblib/dblib_driver.c php-5.6.27/ext/pdo_dblib/dblib_driver.c
+--- php-5.6.26/ext/pdo_dblib/dblib_driver.c	2016-09-15 11:30:24.000000000 +0200
++++ php-5.6.27/ext/pdo_dblib/dblib_driver.c	2016-10-14 13:03:12.000000000 +0200
+@@ -281,6 +281,12 @@
+ 		,{"7.2",DBVERSION_72}
+ 		,{"8.0",DBVERSION_72}
+ #endif
++#ifdef DBVERSION_73
++		,{"7.3",DBVERSION_73}
++#endif
++#ifdef DBVERSION_74
++		,{"7.4",DBVERSION_74}
++#endif
+ 		,{"10.0",DBVERSION_100}
+ 		,{"auto",0} /* Only works with FreeTDS. Other drivers will bork */
+ 		
+diff -ru php-5.6.26/ext/pdo_dblib/tests/bug_45876.phpt php-5.6.27/ext/pdo_dblib/tests/bug_45876.phpt
+--- php-5.6.26/ext/pdo_dblib/tests/bug_45876.phpt	2016-09-15 11:30:24.000000000 +0200
++++ php-5.6.27/ext/pdo_dblib/tests/bug_45876.phpt	2016-10-14 13:03:12.000000000 +0200
+@@ -14,10 +14,10 @@
+ var_dump($stmt->getColumnMeta(0));
+ $stmt = null;
+ ?>
+---EXPECT--
++--EXPECTF--
+ array(8) {
+   ["max_length"]=>
+-  int(255)
++  int(%d)
+   ["precision"]=>
+   int(0)
+   ["scale"]=>
+@@ -29,7 +29,7 @@
+   ["name"]=>
+   string(13) "TABLE_CATALOG"
+   ["len"]=>
+-  int(255)
++  int(%d)
+   ["pdo_type"]=>
+   int(2)
+ }
