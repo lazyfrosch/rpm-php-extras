@@ -12,7 +12,13 @@
 %define list	%{?_with_mcrypt:mcrypt} %{?_with_tidy:tidy} %{?_with_mssql:pdo_dblib} %{?_with_interbase:interbase pdo_firebird} %{?_with_imap:imap}
 %define opts	%{?_with_interbase:--with-interbase=%{_libdir}/firebird --with-pdo-firebird=%{_libdir}/firebird} %{?_with_imap:--with-imap-ssl --with-kerberos}
 
-Name:       php-extras
+# default build against scl rh-php71
+%{!?scl:%define scl rh-php71}
+
+%{?scl:%scl_package php-extras}
+%{!?scl:%global pkg_name %{name}}
+
+Name:       %{?scl_prefix}php-extras
 Summary:    Additional PHP modules from the standard PHP distribution
 Version:    7.1.8
 Release:    1%{?dist}
@@ -21,8 +27,22 @@ License:    The PHP License
 URL:        http://www.php.net/
 Source0:    http://www.php.net/distributions/php-%{version}.tar.bz2
 
-BuildRequires: php-devel >= 7.1
-BuildRequires: php-pdo
+BuildRequires: %{?scl_prefix}php-devel >= 7.1
+BuildRequires: %{?scl_prefix}php-pdo
+%{?scl:Requires: %scl_runtime}
+%if 0%{?scl:1}
+BuildRequires: scl-utils-build
+Requires: %scl_require %{scl}
+
+# We need some basic system macros
+# Note: Other SCL php packages don't do this, I don't know why -mfrosch
+BuildRequires:  php-devel
+BuildRequires:  php-pear
+%global scl_shortname %(echo "%{scl}" | cut -d- -f2-)
+%global php_inidir %{%{scl_shortname}_php_inidir}
+%global php_core_api %{%{scl_shortname}_php_core_api}
+%global php_zend_api %{%{scl_shortname}_php_zend_api}
+%endif
 
 
 %description
@@ -32,46 +52,46 @@ This package contains various additional modules for PHP, which
 have not been included in the basic PHP package for Fedora Core.
 
 
-%package -n php-imap
+%package -n %{?scl_prefix}php-imap
 Summary:     A module for PHP applications that use IMAP
 Group:       Development/Languages
 Requires:    php(zend-abi) = %{php_zend_api}
 Requires:    php(api) = %{php_core_api}
 %{?_with_imap:BuildRequires: krb5-devel, openssl-devel, libc-client-devel}
 
-%description -n php-imap
+%description -n %{?scl_prefix}php-imap
 The php-imap package module will add IMAP (Internet Message Access Protocol)
 support to PHP. IMAP is a protocol for retrieving and uploading e-mail messages
 on mail servers. PHP is an HTML-embedded scripting language. If you need IMAP
 support for PHP applications, you will need to install this package.
 
 
-%package -n php-mcrypt
+%package -n %{?scl_prefix}php-mcrypt
 Summary:     Standard PHP module provides mcrypt library support
 Group:       Development/Languages
 Requires:    php(zend-abi) = %{php_zend_api}
 Requires:    php(api) = %{php_core_api}
 %{?_with_mcrypt:BuildRequires: libmcrypt-devel}
 
-%description -n php-mcrypt
+%description -n %{?scl_prefix}php-mcrypt
 The php-mcrypt package contains a dynamic shared object that will
 add support for using the mcrypt library to PHP.
 
 
-%package -n php-tidy
+%package -n %{?scl_prefix}php-tidy
 Summary:     Standard PHP module provides tidy library support
 Group:       Development/Languages
 Requires:    php(zend-abi) = %{php_zend_api}
 Requires:    php(api) = %{php_core_api}
 %{?_with_tidy:BuildRequires: libtidy-devel}
 
-%description -n php-tidy
+%description -n %{?scl_prefix}php-tidy
 The php-tidy package contains a dynamic shared object that will
 add support for using the tidy library to PHP.
 
 
-%package -n php-mssql
-Summary: Standard PHP module provides mssql support
+%package -n %{?scl_prefix}php-mssql
+Summary: Standard PHP module provides mssql support via pdo_dblib
 Group: Development/Languages
 Requires:    php(zend-abi) = %{php_zend_api}
 Requires:    php(api) = %{php_core_api}
@@ -81,14 +101,14 @@ Provides:    php-pdo_dblib
 Provides:    php-pdo_dblib%{?_isa}
 %{?_with_mssql:BuildRequires: freetds-devel}
 
-%description -n php-mssql
+%description -n %{?scl_prefix}php-mssql
 The php-mssql package contains a dynamic shared object that will
 add MSSQL database support to PHP.  It uses the TDS (Tabular
 DataStream) protocol through the freetds library, hence any
 database server which supports TDS can be accessed.
 
 
-%package -n php-interbase
+%package -n %{?scl_prefix}php-interbase
 Summary:     Standard PHP module provides interbase/firebird support
 Group:       Development/Languages
 Requires:    php(zend-abi) = %{php_zend_api}
@@ -101,7 +121,7 @@ Provides:    php-pdo_firebird
 Provides:    php-pdo_firebird%{?_isa}
 %{?_with_interbase:BuildRequires: firebird-devel}
 
-%description -n php-interbase
+%description -n %{?scl_prefix}php-interbase
 The php-interbase package contains a dynamic shared object that will
 add database support through Interbase/Firebird to PHP.
 
@@ -152,7 +172,7 @@ fail=0
 for mod in %{list}
 do
     : Minimal load test for $mod extension
-    php -d extension=ext/$mod/modules/$mod.so -m | grep -i $mod
+    %{__php} -d extension=ext/$mod/modules/$mod.so -m | grep -i $mod
 
     [ -d ext/$mod/tests ] || continue
 
@@ -203,7 +223,7 @@ done
 rm -rf %{buildroot}
 
 
-%define fil()	%%{?_with_%1:%%files -n php-%1 -f files.%1}
+%define fil()	%%{?_with_%1:%%files -n %{?scl_prefix}php-%1 -f files.%1}
 %{expand:%fil mcrypt}
 %{expand:%fil tidy}
 %{expand:%fil mssql}
@@ -214,6 +234,7 @@ rm -rf %{buildroot}
 %changelog
 * Tue Mar 27 2018 Markus Frosch <markus.frosch@icinga.com> - 7.8.1-1
 - Update for PHP 7.1 (just ship pdo_dblib for mssql)
+- Update packaging for SCL rh-php71
 
 * Wed Mar  8 2017 Remi Collet <rcollet@redhat.com> - 5.4.16-8
 - drop 1 failed test on arm
