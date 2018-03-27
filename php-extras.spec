@@ -9,23 +9,19 @@
 %{expand:%def mssql}
 %{expand:%def tidy}
 
-%define list	%{?_with_mcrypt:mcrypt} %{?_with_tidy:tidy} %{?_with_mssql:mssql pdo_dblib} %{?_with_interbase:interbase pdo_firebird} %{?_with_imap:imap}
+%define list	%{?_with_mcrypt:mcrypt} %{?_with_tidy:tidy} %{?_with_mssql:pdo_dblib} %{?_with_interbase:interbase pdo_firebird} %{?_with_imap:imap}
 %define opts	%{?_with_interbase:--with-interbase=%{_libdir}/firebird --with-pdo-firebird=%{_libdir}/firebird} %{?_with_imap:--with-imap-ssl --with-kerberos}
 
 Name:       php-extras
 Summary:    Additional PHP modules from the standard PHP distribution
-Version:    5.4.16
-Release:    8%{?dist}
+Version:    7.1.8
+Release:    1%{?dist}
 Group:      Development/Languages
 License:    The PHP License
 URL:        http://www.php.net/
 Source0:    http://www.php.net/distributions/php-%{version}.tar.bz2
 
-Patch0:     php-5.4.16-mcrypt.patch
-# Sync with upstream extension in 5.6.27
-Patch1:     php-5.4.16-pdo-dblib.patch
-
-BuildRequires: php-devel >= 5.4
+BuildRequires: php-devel >= 7.1
 BuildRequires: php-pdo
 
 
@@ -127,11 +123,8 @@ License.
 %prep
 %setup -q -n php-%{version}
 
-%patch0 -p1 -b .security
-%patch1 -p2 -b .dblib
-
 # avoid tests which requires databases
-rm -rf ext/{mssql,pdo_dblib,interbase,pdo_firebird}/tests
+rm -rf ext/{pdo_dblib,interbase,pdo_firebird}/tests
 
 
 %build
@@ -219,6 +212,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Mar 27 2018 Markus Frosch <markus.frosch@icinga.com> - 7.8.1-1
+- Update for PHP 7.1 (just ship pdo_dblib for mssql)
+
 * Wed Mar  8 2017 Remi Collet <rcollet@redhat.com> - 5.4.16-8
 - drop 1 failed test on arm
 
