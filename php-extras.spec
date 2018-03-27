@@ -55,8 +55,8 @@ have not been included in the basic PHP package for Fedora Core.
 %package -n %{?scl_prefix}php-imap
 Summary:     A module for PHP applications that use IMAP
 Group:       Development/Languages
-Requires:    php(zend-abi) = %{php_zend_api}
-Requires:    php(api) = %{php_core_api}
+Requires:    %{?scl_prefix}php(zend-abi) = %{php_zend_api}
+Requires:    %{?scl_prefix}php(api) = %{php_core_api}
 %{?_with_imap:BuildRequires: krb5-devel, openssl-devel, libc-client-devel}
 
 %description -n %{?scl_prefix}php-imap
@@ -69,8 +69,8 @@ support for PHP applications, you will need to install this package.
 %package -n %{?scl_prefix}php-mcrypt
 Summary:     Standard PHP module provides mcrypt library support
 Group:       Development/Languages
-Requires:    php(zend-abi) = %{php_zend_api}
-Requires:    php(api) = %{php_core_api}
+Requires:    %{?scl_prefix}php(zend-abi) = %{php_zend_api}
+Requires:    %{?scl_prefix}php(api) = %{php_core_api}
 %{?_with_mcrypt:BuildRequires: libmcrypt-devel}
 
 %description -n %{?scl_prefix}php-mcrypt
@@ -81,8 +81,8 @@ add support for using the mcrypt library to PHP.
 %package -n %{?scl_prefix}php-tidy
 Summary:     Standard PHP module provides tidy library support
 Group:       Development/Languages
-Requires:    php(zend-abi) = %{php_zend_api}
-Requires:    php(api) = %{php_core_api}
+Requires:    %{?scl_prefix}php(zend-abi) = %{php_zend_api}
+Requires:    %{?scl_prefix}php(api) = %{php_core_api}
 %{?_with_tidy:BuildRequires: libtidy-devel}
 
 %description -n %{?scl_prefix}php-tidy
@@ -93,12 +93,12 @@ add support for using the tidy library to PHP.
 %package -n %{?scl_prefix}php-mssql
 Summary: Standard PHP module provides mssql support via pdo_dblib
 Group: Development/Languages
-Requires:    php(zend-abi) = %{php_zend_api}
-Requires:    php(api) = %{php_core_api}
-Requires:    php(pdo-abi) = %{php_pdo_api}
-Provides:    php_database
-Provides:    php-pdo_dblib
-Provides:    php-pdo_dblib%{?_isa}
+Requires:    %{?scl_prefix}php(zend-abi) = %{php_zend_api}
+Requires:    %{?scl_prefix}php(api) = %{php_core_api}
+Requires:    %{?scl_prefix}php(pdo-abi) = %{php_pdo_api}
+Provides:    %{?scl_prefix}php_database
+Provides:    %{?scl_prefix}php-pdo_dblib
+Provides:    %{?scl_prefix}php-pdo_dblib%{?_isa}
 %{?_with_mssql:BuildRequires: freetds-devel}
 
 %description -n %{?scl_prefix}php-mssql
@@ -111,14 +111,14 @@ database server which supports TDS can be accessed.
 %package -n %{?scl_prefix}php-interbase
 Summary:     Standard PHP module provides interbase/firebird support
 Group:       Development/Languages
-Requires:    php(zend-abi) = %{php_zend_api}
-Requires:    php(api) = %{php_core_api}
-Requires:    php(pdo-abi) = %{php_pdo_api}
-Provides:    php_database
-Provides:    php-firebird
-Provides:    php-firebird%{?_isa}
-Provides:    php-pdo_firebird
-Provides:    php-pdo_firebird%{?_isa}
+Requires:    %{?scl_prefix}php(zend-abi) = %{php_zend_api}
+Requires:    %{?scl_prefix}php(api) = %{php_core_api}
+Requires:    %{?scl_prefix}php(pdo-abi) = %{php_pdo_api}
+Provides:    %{?scl_prefix}php_database
+Provides:    %{?scl_prefix}php-firebird
+Provides:    %{?scl_prefix}php-firebird%{?_isa}
+Provides:    %{?scl_prefix}php-pdo_firebird
+Provides:    %{?scl_prefix}php-pdo_firebird%{?_isa}
 %{?_with_interbase:BuildRequires: firebird-devel}
 
 %description -n %{?scl_prefix}php-interbase
