@@ -199,20 +199,20 @@ exit $fail
 rm -rf %{buildroot}
 
 install -d %{buildroot}%{php_extdir}
-install -d %{buildroot}%{_sysconfdir}/php.d
+install -d %{buildroot}%{php_inidir}
 
 for mod in %{list}
 do
     make -C ext/${mod} install INSTALL_ROOT=%{buildroot}
 
-    cat > %{buildroot}%{_sysconfdir}/php.d/${mod}.ini <<EOF
+    cat > %{buildroot}%{php_inidir}/${mod}.ini <<EOF
 ; Enable ${mod} extension module
 extension=${mod}.so
 EOF
     cat > files.${mod} <<EOF
 %defattr(-,root,root)
 %{php_extdir}/${mod}.so
-%config(noreplace) %attr(644,root,root) %{_sysconfdir}/php.d/${mod}.ini
+%config(noreplace) %attr(644,root,root) %{php_inidir}/${mod}.ini
 EOF
 done
 
