@@ -42,6 +42,7 @@ BuildRequires:  php-pear
 %global php_inidir %{%{scl_shortname}_php_inidir}
 %global php_core_api %{%{scl_shortname}_php_core_api}
 %global php_zend_api %{%{scl_shortname}_php_zend_api}
+%global php_pdo_api %{%{scl_shortname}_php_pdo_api}
 %endif
 
 
