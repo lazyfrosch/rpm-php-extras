@@ -13,7 +13,7 @@
 %define opts	%{?_with_interbase:--with-interbase=%{_libdir}/firebird --with-pdo-firebird=%{_libdir}/firebird} %{?_with_imap:--with-imap-ssl --with-kerberos}
 
 # default build against scl rh-php71
-%{!?scl:%define scl rh-php71}
+%{!?scl:%global scl rh-php71}
 
 %{?scl:%scl_package php-extras}
 %{!?scl:%global pkg_name %{name}}
